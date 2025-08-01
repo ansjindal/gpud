@@ -69,6 +69,26 @@ spec:
           env:
             - name: GPUD_NO_USAGE_STATS
               value: {{ .Values.gpud.GPUD_NO_USAGE_STATS | quote }}
+            {{- if .Values.proxy.enabled }}
+            {{- if .Values.proxy.http_proxy }}
+            - name: HTTP_PROXY
+              value: {{ .Values.proxy.http_proxy | quote }}
+            - name: http_proxy
+              value: {{ .Values.proxy.http_proxy | quote }}
+            {{- end }}
+            {{- if .Values.proxy.https_proxy }}
+            - name: HTTPS_PROXY
+              value: {{ .Values.proxy.https_proxy | quote }}
+            - name: https_proxy
+              value: {{ .Values.proxy.https_proxy | quote }}
+            {{- end }}
+            {{- if .Values.proxy.no_proxy }}
+            - name: NO_PROXY
+              value: {{ .Values.proxy.no_proxy | quote }}
+            - name: no_proxy
+              value: {{ .Values.proxy.no_proxy | quote }}
+            {{- end }}
+            {{- end }}
 
           command: [ "nsenter"]
           args:
@@ -95,6 +115,8 @@ spec:
               --log-level={{ .Values.gpud.log_level | quote }} \
               --endpoint={{ .Values.gpud.endpoint | quote }} \
               --enable-auto-update={{ .Values.gpud.enable_auto_update }} \
+              --token={{ .Values.gpud.token | quote }} \
+              --node-group={{ .Values.gpud.node_group | quote }} \
               --auto-update-exit-code={{ .Values.gpud.auto_update_exit_code }}
 
       {{- with .Values.affinity }}

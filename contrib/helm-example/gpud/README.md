@@ -22,6 +22,32 @@ helm install gpud charts/gpud \
 helm upgrade gpud charts/gpud ...
 ```
 
+## HTTP Proxy Configuration
+
+If your cluster requires HTTP proxy settings, you can configure them using the following options:
+
+```bash
+helm install gpud charts/gpud \
+--create-namespace \
+--namespace gpud-run \
+--values charts/gpud/values.yaml \
+--set proxy.enabled=true \
+--set proxy.http_proxy=http://proxy.example.com:8080 \
+--set proxy.https_proxy=http://proxy.example.com:8080 \
+--set proxy.no_proxy="localhost,127.0.0.1,.example.com" \
+# ... other configuration options
+```
+
+Or configure in your `values.yaml` file:
+
+```yaml
+proxy:
+  enabled: true
+  http_proxy: "http://proxy.example.com:8080"
+  https_proxy: "http://proxy.example.com:8080"
+  no_proxy: "localhost,127.0.0.1,.example.com"
+```
+
 To check the status:
 
 ```bash
